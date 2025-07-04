@@ -1,0 +1,20 @@
+basePath: /
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: http://example.com/support
+  description: JWT-based authentication service with refresh tokens
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Authentication Service API
+  version: "1.0"
+paths: {}
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

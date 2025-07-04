@@ -19,6 +19,15 @@ func NewLogoutHandler(cfg *config.Config, tokens *storage.TokenStorage) *LogoutH
 	return &LogoutHandler{cfg: cfg, tokens: tokens}
 }
 
+// Logout godoc
+// @Summary Выйти из системы
+// @Description Инвалидирует токены пользователя
+// @Tags Аутентификация
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} models.MessageResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Router /logout [post]
 func (h *LogoutHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

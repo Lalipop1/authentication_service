@@ -19,6 +19,15 @@ func NewMeHandler(cfg *config.Config, tokens *storage.TokenStorage) *MeHandler {
 	return &MeHandler{cfg: cfg, tokens: tokens}
 }
 
+// GetCurrentUser godoc
+// @Summary Получить текущего пользователя
+// @Description Возвращает GUID авторизованного пользователя
+// @Tags Пользователь
+// @Produce json
+// @Security ApiKeyAuth
+// @Success 200 {object} models.UserResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Router /me [get]
 func (h *MeHandler) GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

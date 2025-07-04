@@ -25,6 +25,18 @@ func NewRefreshHandler(cfg *config.Config, tokens *storage.TokenStorage) *Refres
 	return &RefreshHandler{cfg: cfg, tokens: tokens}
 }
 
+// RefreshToken godoc
+// @Summary Обновить токены
+// @Description Генерирует новую пару токенов по refresh-токену
+// @Tags Аутентификация
+// @Accept json
+// @Produce json
+// @Param request body models.RefreshRequest true "Refresh токен"
+// @Security ApiKeyAuth
+// @Success 200 {object} models.TokenPair
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Router /refresh [post]
 func (h *RefreshHandler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

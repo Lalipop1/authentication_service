@@ -21,17 +21,16 @@ func NewAuthHandler(cfg *config.Config, tokens *storage.TokenStorage) *AuthHandl
 }
 
 // GetTokenPair godoc
-// @Summary Get access and refresh tokens
-// @Description Generates new pair of access and refresh tokens for specified user GUID
-// @Tags auth
-// @Accept json
+// @Summary Получить access и refresh токены
+// @Description Генерирует новую пару токенов для пользователя
+// @Tags Аутентификация
+// @Accept  json
 // @Produce json
-// @Param guid query string true "User GUID"
+// @Param guid query string true "GUID пользователя"
 // @Success 200 {object} models.TokenPair
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 500 {object} models.ErrorResponse
 // @Router /tokens [get]
-
 func (h *AuthHandler) GetTokenPair(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

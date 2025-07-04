@@ -1,18 +1,21 @@
 # Build stage
-# Build stage
-FROM golang:1.21-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 # Install swag
-RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN apk add --no-cache git
+RUN go install github.com/swaggo/swag/cmd/swag@v1.16.2
 
-WORKDIR /app
+
+WORKDIR /authentification_service
+COPY go.mod go.sum ./
+RUN go mod download
 COPY . .
 
 # Generate Swagger docs
-RUN swag init -g main.go
+RUN swag init -g main.go --output docs --parseDependency --parseInternal
 
 # Build application
-RUN CGO_ENABLED=0 GOOS=linux go build -o auth-service .
+RUN CGO_ENABLED=0 GOOS=linux go build -o authentification_service .
 
 # Final stage
 FROM alpine:latest

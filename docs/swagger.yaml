@@ -1,4 +1,32 @@
 basePath: /
+definitions:
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.RefreshRequest:
+    properties:
+      refresh_token:
+        type: string
+    type: object
+  models.TokenPair:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  models.UserResponse:
+    properties:
+      user_guid:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -11,7 +39,106 @@ info:
     url: https://opensource.org/licenses/MIT
   title: Authentication Service API
   version: "1.0"
-paths: {}
+paths:
+  /logout:
+    post:
+      description: Инвалидирует токены пользователя
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Выйти из системы
+      tags:
+      - Аутентификация
+  /me:
+    get:
+      description: Возвращает GUID авторизованного пользователя
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Получить текущего пользователя
+      tags:
+      - Пользователь
+  /refresh:
+    post:
+      consumes:
+      - application/json
+      description: Генерирует новую пару токенов по refresh-токену
+      parameters:
+      - description: Refresh токен
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TokenPair'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновить токены
+      tags:
+      - Аутентификация
+  /tokens:
+    get:
+      consumes:
+      - application/json
+      description: Генерирует новую пару токенов для пользователя
+      parameters:
+      - description: GUID пользователя
+        in: query
+        name: guid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TokenPair'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Получить access и refresh токены
+      tags:
+      - Аутентификация
 securityDefinitions:
   ApiKeyAuth:
     in: header

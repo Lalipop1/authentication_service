@@ -5,6 +5,18 @@ import (
 	"time"
 )
 
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
+
+type MessageResponse struct {
+	Message string `json:"message"`
+}
+
+type UserResponse struct {
+	UserGUID string `json:"user_guid"`
+}
+
 type TokenPair struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`

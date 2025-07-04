@@ -11,8 +11,7 @@
 
 
 ```
-auth-service/
-├── cmd/               # Точка входа
+authentification_service/
 ├── config/            # Конфигурация приложения
 ├── docs/              # Swagger документация
 ├── handlers/          # HTTP обработчики
